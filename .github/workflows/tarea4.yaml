@@ -38,5 +38,9 @@ jobs:
     - name: Build docker image
       run: |
         docker build -t devops_ws . --tag devops_ws_$(date +%s)
-    - name: Display pushed branch
-      run: echo "Pushed branch is ${{ github.ref }}"
+    - name: Parse branch name
+      id: parse_branch
+      run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"      
+    - name: Use branch name
+      run: |
+        echo "Branch name is ${{ steps.parse_branch.outputs.branch }}"
