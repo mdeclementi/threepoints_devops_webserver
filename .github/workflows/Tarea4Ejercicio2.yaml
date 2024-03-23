@@ -3,7 +3,7 @@ name: Comprobar Pull Request
 on:
   pull_request:
     branches:
-      - hotfix-tarea4  # Cambia 'main' por la rama principal de tu repositorio si es diferente
+      - sdsd  # Cambia 'main' por la rama principal de tu repositorio si es diferente
 
 jobs:
   check_requirements:
