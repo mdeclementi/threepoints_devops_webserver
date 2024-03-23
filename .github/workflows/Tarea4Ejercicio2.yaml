@@ -1,0 +1,42 @@
+name: Comprobar Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main  # Cambia 'main' por la rama principal de tu repositorio si es diferente
+
+jobs:
+  check_requirements:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v2
+
+    - name: Comprobar existencia de allow_pull_request.txt
+      run: |
+        if [ -f "allow_pull_request.txt" ]; then
+          echo "::set-output name=allow_pull::true"
+        else
+          echo "::set-output name=allow_pull::false"
+        fi
+
+  permitir_build:
+    needs: check_requirements
+    runs-on: ubuntu-latest
+    if: ${{ needs.check_requirements.outputs.allow_pull == 'true' }}
+
+    steps:
+    - name: Permitir Pull Request
+      run: echo "Permitiendo Pull Request"
+
+  impedir_build:
+    needs: check_requirements
+    runs-on: ubuntu-latest
+    if: ${{ needs.check_requirements.outputs.allow_pull == 'false' }}
+
+    steps:
+    - name: Impedir Pull Request
+      run: |
+        echo "Build fallida. Impidiendo Pull Request"
+        exit 1
