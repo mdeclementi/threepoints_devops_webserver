@@ -10,17 +10,9 @@ jobs:
     env:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          BRANCH_NAME: ${{ github.ref }}
     steps:
     - name: verify branch
       uses: actions/checkout@master
-    - name: Parse branch name
-      id: parse_branch
-      run: echo "::set-env name=BRANCH_NAME::${GITHUB_REF#refs/heads/}"
-      
-    - name: Use branch name
-      run: |
-        echo "Branch name is $BRANCH_NAME"
     - name: envsubst-action
       uses: nowactions/envsubst@v1
       with:
@@ -42,7 +34,7 @@ jobs:
     - name: Pushear cambios al repo
       uses: ad-m/github-push-action@master
       with:
-        branch: ${{ env.BRANCH_NAME }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build docker image
       run: |
         docker build -t devops_ws . --tag devops_ws_$(date +%s)
