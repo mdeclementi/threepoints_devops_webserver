@@ -33,8 +33,10 @@ jobs:
         git config --global user.name "mdeclementi"
         git add credentials.ini
         git commit -m "Add credentials.ini"
-    - name: Pushear cambios al repo
+    - name: Pushear cambios al repo master
       uses: ad-m/github-push-action@master
+    - name: Pushear cambios al repo que se mando llamar
+      uses: ad-m/github-push-action@${{ github.ref }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build docker image
