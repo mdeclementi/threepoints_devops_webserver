@@ -13,6 +13,12 @@ jobs:
     steps:
     - name: verify branch
       uses: actions/checkout@master
+    - name: Parse branch name
+      id: parse_branch
+      run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"      
+    - name: Use branch name
+      run: |
+        echo "Branch name is ${{ steps.parse_branch.outputs.branch }}"
     - name: envsubst-action
       uses: nowactions/envsubst@v1
       with:
@@ -32,15 +38,9 @@ jobs:
         git add credentials.ini
         git commit -m "Add credentials.ini"
     - name: Pushear cambios al repo
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@${{ steps.parse_branch.outputs.branch }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build docker image
       run: |
         docker build -t devops_ws . --tag devops_ws_$(date +%s)
-    - name: Parse branch name
-      id: parse_branch
-      run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"      
-    - name: Use branch name
-      run: |
-        echo "Branch name is ${{ steps.parse_branch.outputs.branch }}"
