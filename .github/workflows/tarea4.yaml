@@ -4,8 +4,6 @@ on:
   push:
     branches:
     - master
-    - 'feature*'
-    - 'hotfix*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,18 +25,18 @@ jobs:
         export USERNAME=${USERNAME}
         export PASSWORD=${PASSWORD}
         envsubst < credentials.ini.tpl > /tmp/credentials.ini
-    - name: Addear cambios al rep
+    - name: Addear cambios al repo
       run: |
         git config --global user.email "marcusdeclementi@gmail.com"
         git config --global user.name "mdeclementi"
         git add credentials.ini
         git commit -m "Add credentials.ini"
-    - name: Pushear cambios al repo master
+    - name: Pushear cambios al repo
       uses: ad-m/github-push-action@master
-    - name: Pushear cambios al repo que se mando llamar
-      uses: ad-m/github-push-action@${{ github.ref }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build docker image
       run: |
         docker build -t devops_ws . --tag devops_ws_$(date +%s)
+    - name: Display pushed branch
+      run: echo "Pushed branch is ${{ github.ref }}"
