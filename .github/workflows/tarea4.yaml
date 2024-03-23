@@ -34,7 +34,10 @@ jobs:
         git add credentials.ini
         git commit -m "Add credentials.ini"
     - name: Pushear cambios al repo
-      uses: ad-m/github-push-action@master
+      uses: |
+        ad-m/github-push-action@master
+        ad-m/github-push-action@feature*
+        ad-m/github-push-action@hotfix*
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build docker image
