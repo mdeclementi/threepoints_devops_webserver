@@ -1,4 +1,5 @@
-@Library('threepoints-sharedlib@main') _ pipeline {
+@Library('threepoints-sharedlib@main') _
+pipeline {
 agent any
 stages { stage('Checkout') {
 steps {
