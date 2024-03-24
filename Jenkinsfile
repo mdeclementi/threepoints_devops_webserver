@@ -8,7 +8,6 @@ git branch: 'master', credentialsId: 'secret-user', url:
 }
 stage('Pruebas de SAST') { steps {
 script {
-// Llamada a la función desde la biblioteca compartida
 sonarAnalysis(false) }
 } }
         stage('Build') {
@@ -18,8 +17,8 @@ sh 'docker build -t devops_threepoints:latest .' }
    
 post {
         success {
-echo 'Pipeline succeeded' }
+echo 'Pipeline exitosa' }
 failure {
-echo 'Pipeline failed'
+echo 'Pipeline fallida'
 } }
 }
